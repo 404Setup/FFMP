@@ -38,25 +38,28 @@ public class FFMPMain {
             List<File> forgeShims = ForgeFinder.find();
             for (File forgeJar : forgeShims) ShimChange.change(forgeJar, mixinJar);
 
-            File launcherJson = BaseFinder.findLauncherJson();
-            if (launcherJson != null) {
-                if (ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
-                        "org.spongepowered:mixin:0.8.7",
-                        mixinJar)) {
-                    mixinJar.moveTo(librariesDir.toPath());
-                    return;
+            try {
+                mixinJar.moveTo(librariesDir.toPath());
+
+                File launcherJson = BaseFinder.findLauncherJson();
+                if (launcherJson != null) {
+                    if (ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
+                            "org.spongepowered:mixin:0.8.7",
+                            mixinJar)) {
+                        return;
+                    }
+                    if (ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
+                            "org.spongepowered:mixin:0.8.6",
+                            mixinJar)) {
+                        return;
+                    }
+                    ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
+                            "org.spongepowered:mixin:0.8.5",
+                            mixinJar);
                 }
-                if (ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
-                        "org.spongepowered:mixin:0.8.6",
-                        mixinJar)) {
-                    mixinJar.moveTo(librariesDir.toPath());
-                    return;
-                }
-                ClientJsonChange.modifyJsonFileSafely(launcherJson.getAbsolutePath(),
-                        "org.spongepowered:mixin:0.8.5",
-                        mixinJar);
+            } finally {
+                mixinJar.clean();
             }
-            mixinJar.moveTo(librariesDir.toPath());
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -27,8 +27,8 @@ public class ClientJsonChange {
     }
 
     public static boolean modifyJsonFileSafely(String jsonFilePath, String targetLibraryName,
-                                            String newName, String newPath, String newUrl,
-                                            String newSha1, long newSize) throws IOException {
+                                               String newName, String newPath, String newUrl,
+                                               String newSha1, long newSize) throws IOException {
 
         JsonObject rootObject;
         try (FileReader reader = new FileReader(jsonFilePath, StandardCharsets.UTF_8)) {
@@ -62,13 +62,12 @@ public class ClientJsonChange {
             }
         }
 
-        if (!found) {
+        if (found) {
+            try (FileWriter writer = new FileWriter(jsonFilePath, StandardCharsets.UTF_8)) {
+                gson.toJson(rootObject, writer);
+            }
+        } else {
             System.err.println("Library '" + targetLibraryName + "' not found in JSON file");
-            return found;
-        }
-
-        try (FileWriter writer = new FileWriter(jsonFilePath, StandardCharsets.UTF_8)) {
-            gson.toJson(rootObject, writer);
         }
 
         return found;

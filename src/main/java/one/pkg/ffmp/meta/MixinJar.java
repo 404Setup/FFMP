@@ -57,14 +57,6 @@ public record MixinJar(String version, String hash, File file) {
         return versionPath.resolve(JAR_PREFIX + version + JAR_EXTENSION);
     }
 
-    private static byte[] readFileAsBytes(File file) {
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public Path path(Path basePath) {
         return MixinJar.getPath(basePath, version);
     }
@@ -83,8 +75,11 @@ public record MixinJar(String version, String hash, File file) {
 
     public void moveTo(Path basePath) throws IOException {
         if (path(basePath).toFile().exists()) return;
-        Files.move(file.toPath(), path(basePath));
-        file.delete();
+        Files.copy(file.toPath(), path(basePath));
+    }
+
+    public void clean() {
+        if (file.exists()) file.delete();
     }
 
     public String name() {
