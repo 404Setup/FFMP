@@ -1,3 +1,7 @@
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 plugins {
     id("java")
     id("com.gradleup.shadow") version "9.0.0-rc3"
@@ -34,5 +38,12 @@ java {
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "one.pkg.ffmp.FFMPMain"
+        attributes["Implementation-Version"] = archiveVersion
+        attributes["Implementation-Title"] = "FFMP"
+        attributes["Implementation-Timestamp"] = Instant.now().atZone(ZoneId.of("UTC")).format(DateTimeFormatter.ISO_INSTANT)
+        attributes["Specification-Vendor"] = "404Setup"
+        attributes["Specification-Title"] = "ffmp"
+        attributes["Specification-Github"] = "404Setup/FFMP"
+        attributes["Automatic-Module-Name"] = "one.pkg.ffmp"
     }
 }
