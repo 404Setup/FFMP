@@ -1,7 +1,7 @@
 package one.pkg.ffmp.meta;
 
-import io.papermc.paperclip.paperclip.Util;
 import one.pkg.ffmp.getter.BaseGetter;
+import one.pkg.tiny.utils.Hash;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,28 +18,22 @@ public record MixinJar(String version, String hash, File file) {
     }
 
     public static MixinJar of(String version, byte[] hash, File file) {
-        return new MixinJar(version, formatHexHash(hash), file);
+        return new MixinJar(version, Hash.format(hash), file);
     }
 
     public static MixinJar of(String version, String hash) {
         return new MixinJar(version, hash, new File("sponge-mixin-" + version + ".jar"));
     }
 
-    public static MixinJar of(String version) {
+    public static MixinJar of(String version) throws Exception {
         File file = getPath(BaseGetter.getLibrariesDir().toPath(), version).toFile();
         System.out.println("MixinJar File: " + file);
-        byte[] bytes = Util.sha256Digest.digest(readFileAsBytes(file));
+        byte[] bytes = Hash.hash(file);
         return of(version, bytes, file);
     }
 
     public static boolean hasFile(Path basePath, String version) {
         return getPath(basePath, version).toFile().exists();
-    }
-
-    public static String formatHexHash(byte[] hash) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : hash) sb.append(String.format("%02x", b));
-        return sb.toString();
     }
 
     private static void ensureDirectoryExists(Path path) {

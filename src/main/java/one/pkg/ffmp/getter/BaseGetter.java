@@ -11,7 +11,8 @@ public class BaseGetter {
         if (librariesDir != null) return librariesDir;
         File path = BaseFinder.CURRENT_DIR.resolve("libraries").toFile();
         if (!path.exists()) {
-            path = BaseFinder.CURRENT_DIR.getParent().getParent().resolve("libraries").toFile();
+            path = BaseFinder.CURRENT_DIR.getParent()
+                    .getParent().resolve("libraries").toFile();
             if (!path.exists())
                 throw new RuntimeException("Cannot find libraries folder");
         }

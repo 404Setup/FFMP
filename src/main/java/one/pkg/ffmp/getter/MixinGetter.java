@@ -1,7 +1,7 @@
 package one.pkg.ffmp.getter;
 
-import io.papermc.paperclip.paperclip.Util;
 import one.pkg.ffmp.meta.MixinJar;
+import one.pkg.tiny.utils.Hash;
 import one.tranic.t.proxy.RequestWithProxyParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,7 +34,7 @@ public class MixinGetter {
             Files.write(file.toPath(), nativeBytes);
             return MixinJar.of(
                     version,
-                    Util.sha256Digest.digest(nativeBytes),
+                    Hash.hash(nativeBytes),
                     file
             );
         }

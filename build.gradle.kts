@@ -17,6 +17,9 @@ repositories {
 dependencies {
     implementation("com.google.code.gson:gson:2.13.1")
     implementation("one.tranic:t-proxy:1.0.1")
+    implementation("one.pkg:tiny-utils:1.5.0")
+    implementation("net.java.dev.jna:jna:5.17.0")
+    implementation("net.java.dev.jna:jna-platform:5.17.0")
 }
 
 val targetJavaVersion = 17

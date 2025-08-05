@@ -20,6 +20,7 @@ public class FFMPMain {
             System.out.println("Github: https://github.com/404Setup/ForgeFabricMixinPatcher");
             System.out.println("Author: 404Setup");
             System.out.println("License: BSD-3-Clause");
+            System.out.println("Working Directory: " + BaseFinder.CURRENT_DIR);
 
             File librariesDir = BaseGetter.getLibrariesDir();
 

@@ -3,12 +3,23 @@ package one.pkg.ffmp.finder;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class BaseFinder {
     public static final Gson GSON = new Gson();
-    public static final Path CURRENT_DIR = new File(".").toPath();
-    public static final File CURRENT_DIR_FILE = CURRENT_DIR.toFile();
+    public static final Path CURRENT_DIR;
+    public static final File CURRENT_DIR_FILE;
+
+    static {
+        try {
+            CURRENT_DIR = Paths.get(BaseFinder.class.getProtectionDomain().getCodeSource().getLocation().toURI()).toAbsolutePath().getParent();
+            CURRENT_DIR_FILE = CURRENT_DIR.toFile();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private BaseFinder() {
     }
