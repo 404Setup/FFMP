@@ -2,6 +2,7 @@ package one.pkg.ffmp.getter;
 
 import io.papermc.paperclip.paperclip.Util;
 import one.pkg.ffmp.meta.MixinJar;
+import one.tranic.t.proxy.RequestWithProxyParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -24,7 +25,7 @@ public class MixinGetter {
     public static MixinJar getJar(String version) throws Exception {
         URL fileURL = URI.create(MIXIN_JAR_URL.formatted(version, version)).toURL();
         System.out.println("FabricMixin File URL: " + fileURL);
-        try (InputStream inputStream = fileURL.openStream()) {
+        try (InputStream inputStream = RequestWithProxyParser.openStream(fileURL)) {
             File file = new File("sponge-mixin-" + version + ".jar");
             if (file.exists()) file.delete();
             file.createNewFile();
@@ -65,8 +66,7 @@ public class MixinGetter {
 
     public static String getLatestVersion() throws Exception {
         try {
-            URL metadataUrl = URI.create(METADATA_URL).toURL();
-            try (InputStream inputStream = metadataUrl.openStream()) {
+            try (InputStream inputStream = RequestWithProxyParser.openStream(METADATA_URL)) {
                 return parseLatestVersion(inputStream);
             }
         } catch (IOException e) {
